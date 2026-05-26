@@ -14,6 +14,12 @@ def auth_register_user(email, password, name):
         raise InputError("Email already exists")
 
     # TODO: Implement password strength requirements (length, complexity)
+
+    if len(password) < 8:
+        raise InputError("Password must be at least 8 characters long")
+    
+    if password.isdigit() or password.isalpha():
+        raise InputError("Password must have both letters and numbers")
     
     # Register the user
     new_user_instance = User(email, name, password)
