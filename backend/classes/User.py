@@ -14,6 +14,7 @@ class User:
         password_hash=None,
         session_token=None,
         # TODO: Add CSRF token parameter
+        csrf_token=None,
     ):
         """Initialised new user instance."""
         self.__email = email
@@ -29,7 +30,7 @@ class User:
 
         self.__session_token = session_token
         # TODO: Initialize CSRF token storage
-        self.__csrf_token = None
+        self.__csrf_token = csrf_token
         # tokens are None - if no user-session
 
     # private: Generate secure hexadecimal token
