@@ -29,6 +29,7 @@ class User:
 
         self.__session_token = session_token
         # TODO: Initialize CSRF token storage
+        self.__csrf_token = None
         # tokens are None - if no user-session
 
     # private: Generate secure hexadecimal token
@@ -46,11 +47,13 @@ class User:
     def revoke_user_session(self):
         self.__session_token = None
         # TODO: Clear CSRF token on session revocation
+        self.__csrf_token = None
 
     # public: Verify password input
     def verify_password(self, password_input):
         # TODO: Implement secure password verification using hashing
-        return self.__password == password_input
+        #return self.__password == password_input
+        return werkzeug_security.check_password_hash(self.__password, password_input)
 
     # public: Session Token Property
     @property
@@ -85,6 +88,7 @@ class User:
             "password_hash": self.__password,
             "session_token": self.__session_token,
             # TODO: Include CSRF token in dictionary
+            "csrf_token": self.__csrf_token,
         }
 
     # public: cls() used in database/data.py to convert JSON -> in-memory user object
@@ -96,4 +100,5 @@ class User:
             password_hash=data["password_hash"],
             session_token=data.get("session_token"),
             # TODO: Load CSRF token from dictionary
+            csrf_token=data.get("csrf_token"),
         )
