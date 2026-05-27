@@ -2,7 +2,7 @@ from typing import Optional, Dict, Any
 # TODO: Import password hashing library for secure password storage
 # TODO: Import library for secure token generation
 
-import bcrypt 
+import werkzeug.security as werkzeug_security  # For password hashing and verification
 
 
 class User:
@@ -22,7 +22,7 @@ class User:
         # __init__() is used for creating a new User instance via cls(...) or manual instantiation
         if password:
             ## Finished i think # TODO: Implement password hashing instead of storing plain text 
-            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            hashed_password = werkzeug_security.generate_password_hash(password)
             self.__password = hashed_password
         else:
             raise ValueError("Either password or password_hash must be provided")
