@@ -8,6 +8,19 @@ def auth_register_user(email, password, name):
 
     user_dict = load_users()
     # TODO: Implement input validation for email, password, and name
+
+    if not email or not password or not name:
+        raise InputError("Email, password, and name cannot be empty")
+    
+    if not re.match(r"@" + r"\." + r".+", email): # Needs to have an @ symbol to be a valid email not empty and have a .
+        raise InputError("Invalid email format")
+    
+    if len(name) < 2 or len(name) > 50: # Name length requirement
+        raise InputError("Name must be between 2 and 50 characters long")
+    
+    if re.search(r'\s', name): # No gaps allowed in name
+        raise InputError("Name cannot contain gaps")
+    
     
     # Check if email already exists
     if email in user_dict:
