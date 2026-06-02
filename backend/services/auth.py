@@ -9,10 +9,15 @@ def auth_register_user(email, password, name):
     user_dict = load_users()
     # TODO: Implement input validation for email, password, and name
 
-    if not email or not password or not name:
-        raise InputError("Email, password, and name cannot be empty")
-    
-    if not re.match(r"@" + r"\." + r".+", email): # Needs to have an @ symbol to be a valid email not empty and have a .
+    # Trim and normalise email
+    email = email.strip()
+    if email == "":
+        raise InputError("Email cannot be empty")
+    email_key = email.lower()
+
+    # Basic email regex requiring a domain and TLD
+    email_pattern = r"^[A-Za-z0-9.!#$%&'\\*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$"
+    if not re.match(email_pattern, email):
         raise InputError("Invalid email format")
     
     if len(name) < 2 or len(name) > 50: # Name length requirement
@@ -26,9 +31,8 @@ def auth_register_user(email, password, name):
     if email in user_dict:
         raise InputError("Email already exists")
 
-    # TODO: Implement password strength requirements (length, complexity)
-    
-    if not check_password_strength(password): # Easier as both parts require password checking
+    # Password strength checks
+    if not check_password_strength(password):
         raise InputError("Password does not meet strength requirements")
     
     # Register the user
@@ -47,15 +51,13 @@ def auth_login_user(email, password):
     """Service func - logins user if valid email & password"""
     # TODO: Implement input validation for email and password
 
-    if not email or not password:
+    email = email.strip()
+    if email == "":
         raise InputError("Email and password cannot be empty")
     
     if not re.match(r"@" + r"\." + r".+", email): # Needs to have an @ symbol to be a valid email not empty and have a . 
         raise InputError("Invalid email format")
-    
-    if not check_password_strength(password): # Cleaner code
-        raise InputError("Password does not meet strength requirements")
-    
+
     # validate user if in database
     user_dict = load_users()
     if email not in user_dict or not user_dict[email].verify_password(password):
@@ -80,12 +82,17 @@ def check_password_strength(password):
     """Helper func - checks password strength requirements"""
     if len(password) < 8: # Minimum length requirement
         return False
-    if len(password) > 20: # Maximum length requirement
+    if len(password) > 60: # Limit to prevent DoS with extremely long passwords
         return False
-    if password.isdigit() or password.isalpha(): # Must contain both letters and numbers
+    if re.search(r"\s", password): # No whitespace allowed
         return False
-    if password.islower() or password.isupper(): # Must contain both uppercase and lowercase letters
+    # Require at least one uppercase, one lowercase, one digit, one special char
+    if not re.search(r"[A-Z]", password):
         return False
-    if re.search(r'\s', password): # No gaps allowed
+    if not re.search(r"[a-z]", password):
+        return False
+    if not re.search(r"[0-9]", password):
+        return False
+    if not re.search(r"[^A-Za-z0-9]", password):
         return False
     return True

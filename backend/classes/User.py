@@ -22,9 +22,11 @@ class User:
 
         # __init__() is used for creating a new User instance via cls(...) or manual instantiation
         if password:
-            ## Finished i think # TODO: Implement password hashing instead of storing plain text 
-            hashed_password = werkzeug_security.generate_password_hash(password)
-            self.__password = hashed_password
+            # Hash provided plain-text password
+            self.__password = werkzeug_security.generate_password_hash(password)
+        elif password_hash:
+            # Load existing password hash from storage
+            self.__password = password_hash
         else:
             raise ValueError("Either password or password_hash must be provided")
 
@@ -42,7 +44,7 @@ class User:
     def initiate_user_session(self):
         # TODO: Generate CSRF token along with session token
         self.__session_token = self.__generate_token()
-        return self.__session_token, None  # TODO: Return CSRF token
+        return self.__session_token  # TODO: Return CSRF token
 
     # public: Remove user session
     def revoke_user_session(self):
@@ -53,7 +55,6 @@ class User:
     # public: Verify password input
     def verify_password(self, password_input):
         # TODO: Implement secure password verification using hashing
-        #return self.__password == password_input
         return werkzeug_security.check_password_hash(self.__password, password_input)
 
     # public: Session Token Property
