@@ -17,6 +17,9 @@ def auth_register_user(email, password, name):
     if not isinstance(email, str) or not isinstance(password, str) or not isinstance(name, str):
         raise InputError("Email, password, and name must be strings")
 
+    # Validate email format: must have local@domain.tld
+    if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
+        raise InputError("Invalid email format")
 
     name = name.strip()
     if name == "":
@@ -54,7 +57,8 @@ def auth_login_user(email, password):
     if email == "":
         raise InputError("Email and password cannot be empty")
     
-    if not re.match(r"@" + r"\." + r".+", email): # Needs to have an @ symbol to be a valid email not empty and have a . 
+    # Validate email format: must have local@domain.tld
+    if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
         raise InputError("Invalid email format")
 
     # validate user if in database
