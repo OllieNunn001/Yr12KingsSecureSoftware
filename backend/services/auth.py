@@ -14,6 +14,14 @@ def auth_register_user(email, password, name):
     if email == "":
         raise InputError("Email cannot be empty")
     
+    if not isinstance(email, str) or not isinstance(password, str) or not isinstance(name, str):
+        raise InputError("Email, password, and name must be strings")
+
+
+    name = name.strip()
+    if name == "":
+        raise InputError("Name cannot be empty")
+    
     if len(name) < 2 or len(name) > 50: # Name length requirement
         raise InputError("Name must be between 2 and 50 characters long")
     
@@ -71,6 +79,7 @@ def auth_logout_user(session_token):
 
 def check_password_strength(password):
     """Helper func - checks password strength requirements"""
+    password = password.strip()
     if len(password) < 8: # Minimum length requirement
         return False
     if len(password) > 60: # Limit to prevent DoS with extremely long passwords
