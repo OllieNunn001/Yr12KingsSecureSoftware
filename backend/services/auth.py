@@ -50,10 +50,9 @@ def auth_register_user(email, password, name):
     
     sanitised_name = html.escape(name) 
     sanitised_email = html.escape(email) 
-    sanitised_password = html.escape(password) 
     
     # Register the user
-    new_user_instance = User(sanitised_email, sanitised_name, sanitised_password)
+    new_user_instance = User(sanitised_email, sanitised_name, password)
     user_dict[sanitised_email] = new_user_instance
 
     # init user session
