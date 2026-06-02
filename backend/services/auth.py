@@ -2,6 +2,7 @@ from classes.User import User
 from classes.Error import InputError, AccessError
 from database.data import load_users, save_users
 import re
+import html
 
 def auth_register_user(email, password, name):
     """Service func - registers and stores user on backend"""
@@ -27,7 +28,7 @@ def auth_register_user(email, password, name):
     if re.search(r"\s", email):
         raise InputError("Email cannot contain whitespace")
     
-    if ".." in email:
+    if ".." in email: # Desperate fix for the one email
         raise InputError("Email cannot contain consecutive dots")
 
     name = name.strip()
@@ -47,9 +48,13 @@ def auth_register_user(email, password, name):
     if not check_password_strength(password):
         raise InputError("Password does not meet strength requirements")
     
+    sanitised_name = html.escape(name) 
+    sanitised_email = html.escape(email) 
+    sanitised_password = html.escape(password) 
+    
     # Register the user
-    new_user_instance = User(email, name, password)
-    user_dict[email] = new_user_instance
+    new_user_instance = User(sanitised_email, sanitised_name, sanitised_password)
+    user_dict[sanitised_email] = new_user_instance
 
     # init user session
     session_token = new_user_instance.initiate_user_session()
@@ -75,8 +80,10 @@ def auth_login_user(email, password):
     user_dict = load_users()
     if email not in user_dict or not user_dict[email].verify_password(password):
         raise AccessError("Invalid email or password")
+    
+    sanitised_email = html.escape(email)
 
-    session_token = user_dict[email].initiate_user_session()
+    session_token = user_dict[sanitised_email].initiate_user_session()
     # TODO: Generate and return CSRF token
     save_users(user_dict)
 
