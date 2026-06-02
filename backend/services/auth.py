@@ -13,18 +13,9 @@ def auth_register_user(email, password, name):
     email = email.strip()
     if email == "":
         raise InputError("Email cannot be empty")
-    email_key = email.lower()
-
-    # Basic email regex requiring a domain and TLD
-    email_pattern = r"^[A-Za-z0-9.!#$%&'\\*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$"
-    if not re.match(email_pattern, email):
-        raise InputError("Invalid email format")
     
     if len(name) < 2 or len(name) > 50: # Name length requirement
         raise InputError("Name must be between 2 and 50 characters long")
-    
-    if re.search(r'\s', name): # No gaps allowed in name
-        raise InputError("Name cannot contain gaps")
     
     
     # Check if email already exists
