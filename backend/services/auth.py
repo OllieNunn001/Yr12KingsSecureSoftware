@@ -17,13 +17,18 @@ def auth_register_user(email, password, name):
     if email == "":
         raise InputError("Email cannot be empty")
     
+    if email[0] == "@":
+        raise InputError("Invalid email format")
 
     # Validate email format: must have local@domain.tld
     if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
         raise InputError("Invalid email format")
     
-    if email[0] == "@":
-        raise InputError("Invalid email format")
+    if re.search(r"\s", email):
+        raise InputError("Email cannot contain whitespace")
+    
+    if ".." in email:
+        raise InputError("Email cannot contain consecutive dots")
 
     name = name.strip()
     if name == "":
