@@ -20,6 +20,9 @@ def auth_register_user(email, password, name):
     # Validate email format: must have local@domain.tld
     if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
         raise InputError("Invalid email format")
+    
+    if email.startswith("@"):
+        raise InputError("Invalid email format")
 
     name = name.strip()
     if name == "":
