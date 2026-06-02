@@ -4,7 +4,7 @@
 from flask import Flask, request, g
 from flask_cors import CORS
 from decorators.error import catch_errors
-from classes.Error import AccessError
+from classes.Error import AccessError, InputError
 
 from services.auth import auth_register_user, auth_login_user, auth_logout_user
 from services.game import (
@@ -65,7 +65,7 @@ def flask_middle_auth():
 def admin_auth_register():
     data = request.json
     if not data or "email" not in data or "password" not in data or "name" not in data:
-        raise AccessError("Missing required fields: email, password, and name")
+        raise InputError("Missing required fields: email, password, and name")
     email = data["email"]
     password = data["password"]
     name = data["name"]
@@ -81,7 +81,7 @@ def admin_auth_register():
 def admin_auth_login():
     data = request.json
     if not data or "email" not in data or "password" not in data:
-        raise AccessError("Missing required fields: email and password")
+        raise InputError("Missing required fields: email and password")
     email = data["email"]
     password = data["password"]
 
@@ -110,7 +110,7 @@ def admin_get_games():
 def admin_put_games():
     data = request.json
     if not data or "games" not in data:
-        raise AccessError("Missing required field: games")
+        raise InputError("Missing required field: games")
     updated_games_list = data["games"]
     game_update(updated_games_list, g.session_token)
 
@@ -122,7 +122,7 @@ def admin_put_games():
 def admin_mutate_game(game_id):
     data = request.json
     if not data or "mutationType" not in data:
-        raise AccessError("Missing required field: mutationType")
+        raise InputError("Missing required field: mutationType")
     mutation_type = data["mutationType"]
     mutate = game_mutate(game_id, mutation_type, g.session_token)
     return {"data": mutate}, 200
@@ -147,7 +147,7 @@ def admin_get_game_session_results(session_id):
 def player_join_game_session(session_id):
     data = request.json
     if not data or "name" not in data:
-        raise AccessError("Missing required field: name")
+        raise InputError("Missing required field: name")
     name = data["name"]
     player_id = player_add(session_id, name)
     return {"playerId": player_id}, 200
@@ -172,7 +172,7 @@ def player_question_details(player_id):
 def player_question_answer_submit(player_id):
     data = request.json
     if not data or "answers" not in data:
-        raise AccessError("Missing required field: answers")
+        raise InputError("Missing required field: answers")
     answers = data["answers"]
     player_submit_answers(player_id, answers)
     return {}, 200

@@ -9,19 +9,20 @@ def auth_register_user(email, password, name):
     user_dict = load_users()
     # TODO: Implement input validation for email, password, and name
 
+    if not isinstance(email, str) or not isinstance(password, str) or not isinstance(name, str):
+        raise InputError("Email, password, and name must be strings")
+
     # Trim and normalise email
     email = email.strip()
     if email == "":
         raise InputError("Email cannot be empty")
     
-    if not isinstance(email, str) or not isinstance(password, str) or not isinstance(name, str):
-        raise InputError("Email, password, and name must be strings")
 
     # Validate email format: must have local@domain.tld
     if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
         raise InputError("Invalid email format")
     
-    if email.startswith("@"):
+    if email[0] == "@":
         raise InputError("Invalid email format")
 
     name = name.strip()
@@ -33,6 +34,7 @@ def auth_register_user(email, password, name):
     
     
     # Check if email already exists
+    email = email.lower() # Normalise email to lowercase for uniqueness
     if email in user_dict:
         raise InputError("Email already exists")
 
