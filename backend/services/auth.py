@@ -48,8 +48,9 @@ def auth_register_user(email, password, name):
     if not check_password_strength(password):
         raise InputError("Password does not meet strength requirements")
     
-    sanitised_name = html.escape(name) 
     sanitised_email = html.escape(email) 
+
+    sanitised_name = sanitizer(name)
     
     # Register the user
     new_user_instance = User(sanitised_email, sanitised_name, password)
@@ -116,3 +117,14 @@ def check_password_strength(password):
     if not re.search(r"[^A-Za-z0-9]", password):
         return False
     return True
+
+def sanitizer(name):
+    """Helper func - sanitises user input to prevent XSS"""
+    if not isinstance(name, str):
+        raise InputError("Name must be a string")
+    name = name.strip()
+    if name == "":
+        raise InputError("Name cannot be empty")
+    name = name.replace("\x00", "") 
+    name = html.escape(name)
+    return name
