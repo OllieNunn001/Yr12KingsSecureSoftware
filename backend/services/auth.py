@@ -48,8 +48,8 @@ def auth_register_user(email, password, name):
     if name == "":
         raise InputError("Name cannot be empty")
     
-    if len(name) < 2 or len(name) > 50: # Name length requirement
-        raise InputError("Name must be between 2 and 50 characters long")
+    if len(name) < 2 or len(name) > 100: # Name length requirement
+        raise InputError("Name must be between 2 and 100 characters long")
     
     # Register the user
     new_user_instance = User(sanitised_email, sanitised_name, password)
@@ -102,7 +102,7 @@ def check_password_strength(password):
     password = password.strip()
     if len(password) < 8: # Minimum length requirement
         return False
-    if len(password) > 60: # Limit to prevent DoS with extremely long passwords
+    if len(password) > 60: # Limit
         return False
     if re.search(r"\s", password): # No whitespace allowed
         return False
