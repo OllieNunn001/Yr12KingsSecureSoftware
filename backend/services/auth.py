@@ -30,14 +30,6 @@ def auth_register_user(email, password, name):
     
     if ".." in email: # Desperate fix for the one email
         raise InputError("Email cannot contain consecutive dots")
-
-    name = name.strip()
-    if name == "":
-        raise InputError("Name cannot be empty")
-    
-    if len(name) < 2 or len(name) > 50: # Name length requirement
-        raise InputError("Name must be between 2 and 50 characters long")
-    
     
     # Check if email already exists
     email = email.lower() # Normalise email to lowercase for uniqueness
@@ -51,6 +43,13 @@ def auth_register_user(email, password, name):
     sanitised_email = html.escape(email) 
 
     sanitised_name = sanitizer(name)
+
+    name = name.strip()
+    if name == "":
+        raise InputError("Name cannot be empty")
+    
+    if len(name) < 2 or len(name) > 50: # Name length requirement
+        raise InputError("Name must be between 2 and 50 characters long")
     
     # Register the user
     new_user_instance = User(sanitised_email, sanitised_name, password)
@@ -129,7 +128,7 @@ def sanitizer(name):
         raise InputError("Name must be between 2 and 50 characters long")
     name = name.replace("\x00", "") 
     name = name.replace("javascript:", "")
-    name = re.sub(r"[<>\"'&]", "", name)
+    name = re.sub(r"[<>\"]", "", name)
     name = re.sub(r"onerror", "", name)
     name = re.sub(r"onload", "", name)
     name = re.sub(r"onclick", "", name)
