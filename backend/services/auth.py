@@ -124,11 +124,11 @@ def sanitizer(name):
     name = name.strip()
     if name == "":
         raise InputError("Name cannot be empty")
-    if len(name) < 2 or len(name) > 50:
-        raise InputError("Name must be between 2 and 50 characters long")
     name = name.replace("\x00", "") 
     name = name.replace("javascript:", "")
     name = re.sub(r"[<>\"]", "", name)
+    #name = re.sub(r"meta", "", name)
+    #name = re.sub(r"=", "", name)
     name = re.sub(r"onerror", "", name)
     name = re.sub(r"onload", "", name)
     name = re.sub(r"onclick", "", name)
