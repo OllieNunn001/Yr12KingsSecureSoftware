@@ -130,5 +130,10 @@ def sanitizer(name):
     name = name.replace("\x00", "") 
     name = name.replace("javascript:", "")
     name = re.sub(r"[<>\"'&]", "", name)
+    name = re.sub(r"onerror", "", name)
+    name = re.sub(r"onload", "", name)
+    name = re.sub(r"onclick", "", name)
+    name = re.sub(r"onmouseover", "", name)
+    name = re.sub(r"onfocus", "", name)
     name = html.escape(name)
     return name
