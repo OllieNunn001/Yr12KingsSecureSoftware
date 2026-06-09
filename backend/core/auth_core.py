@@ -8,8 +8,6 @@ def authorise_user(session_token, csrf_token):
     if not isinstance(session_token, str) or session_token.strip() == "":
         return False
     # TODO: Implement CSRF token validation
-    if not isinstance(csrf_token, str) or csrf_token.strip() == "":
-        return False
     # TODO: Check both tokens match a valid user session
     user_dict = load_users()
     for user in user_dict.values():

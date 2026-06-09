@@ -62,8 +62,10 @@ def flask_middle_auth():
     session_token = session_token.strip()
     if session_token == "":
         raise AccessError("Invalid session token")
+    
+    csrf_token = request.headers.get("X-CSRF-Token")
 
-    if not authorise_user(session_token, None):# Put csrf when I make it
+    if not authorise_user(session_token, csrf_token):
         raise AccessError("Invalid session token")
     
     # TODO: Store validated tokens in Flask's g object for request context
