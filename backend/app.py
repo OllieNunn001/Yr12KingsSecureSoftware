@@ -57,7 +57,7 @@ def flask_middle_auth():
     # TODO: Implement authorization check for protected routes
     session_token = request.headers.get("Authorization")
 
-    if not session_token:
+    if not isinstance(session_token, str):
         raise AccessError("Invalid session token")
     session_token = session_token.strip()
     if session_token == "":

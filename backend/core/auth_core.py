@@ -5,7 +5,9 @@ from classes.Error import InputError
 def authorise_user(session_token, csrf_token):
     """Authorises user IFF a valid session token exsist"""
     # TODO: Implement session token validation
-    if not isinstance(session_token, str) or session_token.strip() == "":
+    if not isinstance(session_token, str):
+        return False
+    if session_token.strip() == "":
         return False
     # TODO: Implement CSRF token validation
     # TODO: Check both tokens match a valid user session
