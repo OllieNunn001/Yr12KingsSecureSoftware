@@ -56,6 +56,12 @@ def flask_middle_auth():
     # TODO: Extract and validate CSRF token from X-CSRF-Token header
     # TODO: Implement authorization check for protected routes
     session_token = request.headers.get("Authorization")
+
+    if not session_token:
+        raise AccessError("Invalid session token")
+    session_token = session_token.strip()
+    if session_token == "":
+        raise AccessError("Invalid session token")
     # TODO: Store validated tokens in Flask's g object for request context
     g.session_token = session_token
 

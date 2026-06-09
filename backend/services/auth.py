@@ -32,7 +32,7 @@ def auth_register_user(email, password, name):
         raise InputError("Email cannot contain consecutive dots")
     
     # Check if email already exists
-    email = email.lower() # Normalise email to lowercase for uniqueness
+    email = email.lower() # email to lowercase
     if email in user_dict:
         raise InputError("Email already exists")
 

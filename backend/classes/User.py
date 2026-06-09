@@ -3,7 +3,7 @@ from typing import Optional, Dict, Any
 # TODO: Import library for secure token generation
 
 import werkzeug.security as werkzeug_security  # For password hashing and verification
-
+import secrets  # For secure token generation
 
 class User:
     def __init__(
@@ -38,7 +38,8 @@ class User:
     # private: Generate secure hexadecimal token
     def __generate_token(self):
         # TODO: Implement cryptographically secure token generation
-        return "insecure_token_" + self.__email
+        return secrets.token_hex(16) # Makes a hexadeciaml token with 16 bytes
+        #return "insecure_token_" + self.__email
 
     # public: Init user session
     def initiate_user_session(self):
