@@ -1,5 +1,5 @@
 from database.data import load_users, save_users
-from classes.Error import AccessError,InputError
+from classes.Error import InputError
 
 
 def authorise_user(session_token, csrf_token):

@@ -39,7 +39,6 @@ class User:
     def __generate_token(self):
         # TODO: Implement cryptographically secure token generation
         return secrets.token_hex(16) # Makes a hexadeciaml token with 16 bytes
-        #return "insecure_token_" + self.__email
 
     # public: Init user session
     def initiate_user_session(self):
