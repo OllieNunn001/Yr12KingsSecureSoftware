@@ -45,7 +45,7 @@ class User:
         # TODO: Generate CSRF token along with session token
         self.__session_token = self.__generate_token()
         self.__csrf_token = self.__generate_token()
-        return self.__session_token, self.__csrf_token # TODO: Return CSRF token
+        return self.__session_token # TODO: Return CSRF token
 
     # public: Remove user session
     def revoke_user_session(self):
