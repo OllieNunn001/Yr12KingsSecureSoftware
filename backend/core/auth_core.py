@@ -1,12 +1,15 @@
 from database.data import load_users, save_users
-from classes.Error import InputError
+from classes.Error import AccessError,InputError
 
 
 def authorise_user(session_token, csrf_token):
     """Authorises user IFF a valid session token exsist"""
     # TODO: Implement session token validation
-    
+    if not isinstance(session_token, str) or session_token.strip() == "":
+        raise AccessError("Invalid session token")
     # TODO: Implement CSRF token validation
+    if not isinstance(csrf_token, str) or csrf_token.strip() == "":
+        raise AccessError("Invalid CSRF token")
     # TODO: Check both tokens match a valid user session
     return True  # Currently allows all requests
 
