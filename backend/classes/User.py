@@ -44,7 +44,8 @@ class User:
     def initiate_user_session(self):
         # TODO: Generate CSRF token along with session token
         self.__session_token = self.__generate_token()
-        return self.__session_token  # TODO: Return CSRF token
+        self.__csrf_token = self.__generate_token()
+        return self.__session_token, self.__csrf_token # TODO: Return CSRF token
 
     # public: Remove user session
     def revoke_user_session(self):
@@ -63,7 +64,9 @@ class User:
         return self.__session_token
 
     # TODO: Add CSRF token property getter
-
+    @property
+    def csrf_token(self):
+        return self.__csrf_token
     # public: mail Property
     @property
     def email(self):

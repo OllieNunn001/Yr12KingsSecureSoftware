@@ -50,6 +50,7 @@ export const adminAuthLogout = async () => {
     const tokens = {
         sessionToken: sessionStorage.getItem("session_token"),
         // TODO: Retrieve CSRF token for logout request
+        
     }
     const ownerEmailAddress = sessionStorage.getItem("owner");
 
