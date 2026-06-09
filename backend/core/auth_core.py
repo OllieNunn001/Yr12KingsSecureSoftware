@@ -11,7 +11,11 @@ def authorise_user(session_token, csrf_token):
     if not isinstance(csrf_token, str) or csrf_token.strip() == "":
         raise AccessError("Invalid CSRF token")
     # TODO: Check both tokens match a valid user session
-    return True  # Currently allows all requests
+    user_dict = load_users()
+    for user in user_dict.values():
+        if user.session_token == session_token:
+            return True
+    raise AccessError("Invalid session token")
 
 
 def map_session_token_to_email(target_session_token):
