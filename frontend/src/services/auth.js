@@ -45,13 +45,13 @@ export const adminAuthLogin = async (email, password) => {
  * Wrapper func - server request to logout user - removing token and owner from browser storage.
  */
 export const adminAuthLogout = async () => {
-    // const sessionToken = localStorage.getItem("session_token");
-    // const csrfToken = localStorage.getItem("csrf_token");
+    // const sessionToken = sessionStorage.getItem("session_token");
+    // const csrfToken = sessionStorage.getItem("csrf_token");
     const tokens = {
-        sessionToken: localStorage.getItem("session_token"),
+        sessionToken: sessionStorage.getItem("session_token"),
         // TODO: Retrieve CSRF token for logout request
     }
-    const ownerEmailAddress = localStorage.getItem("owner");
+    const ownerEmailAddress = sessionStorage.getItem("owner");
 
     if (!tokens || !ownerEmailAddress) {
         throw new Error("Cannot logout - no tokens or owner email found");
@@ -62,8 +62,8 @@ export const adminAuthLogout = async () => {
         throw new Error(response.error);
     }
 
-    localStorage.removeItem("session_token");
-    localStorage.removeItem("owner");
+    sessionStorage.removeItem("session_token");
+    sessionStorage.removeItem("owner");
 }
 
 /**
@@ -72,7 +72,7 @@ export const adminAuthLogout = async () => {
  */
 export const validateUserToken = async () => {
     const tokens = {
-        sessionToken: localStorage.getItem("session_token"),
+        sessionToken: sessionStorage.getItem("session_token"),
         // TODO: Include CSRF token for validation
     }
     
