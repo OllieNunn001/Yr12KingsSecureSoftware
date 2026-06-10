@@ -10,6 +10,7 @@ def authorise_user(session_token, csrf_token):
     if session_token.strip() == "":
         return False
     # TODO: Implement CSRF token validation
+    # 
     # TODO: Check both tokens match a valid user session
     user_dict = load_users()
     for user in user_dict.values():

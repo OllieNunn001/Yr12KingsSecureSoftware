@@ -81,9 +81,9 @@ def admin_auth_register():
     password = data["password"]
     name = data["name"]
 
-    session_token = auth_register_user(email, password, name)
+    session_token, csrf_token = auth_register_user(email, password, name)
     # TODO: Include CSRF token in response
-    response = {"session_token": session_token}
+    response = {"session_token": session_token, "csrf_token": csrf_token}
     return response, 200
 
 
@@ -96,9 +96,9 @@ def admin_auth_login():
     email = data["email"]
     password = data["password"]
 
-    session_token = auth_login_user(email, password)
+    session_token, csrf_token = auth_login_user(email, password)
     # TODO: Include CSRF token in response
-    response = {"session_token": session_token}
+    response = {"session_token": session_token, "csrf_token": csrf_token}
     return response, 200
 
 

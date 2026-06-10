@@ -58,10 +58,10 @@ def auth_register_user(email, password, name):
     # init user session
     session_token = new_user_instance.initiate_user_session()
     # TODO: Generate and return CSRF token
-    #csrf_token = 
+    csrf_token = new_user_instance.csrf_token
     save_users(user_dict)
 
-    return session_token
+    return session_token, csrf_token
 
 def auth_login_user(email, password):
     """Service func - logins user if valid email & password"""
@@ -84,9 +84,10 @@ def auth_login_user(email, password):
 
     session_token = user_dict[sanitised_email].initiate_user_session()
     # TODO: Generate and return CSRF token
+    csrf_token = user_dict[sanitised_email].csrf_token
     save_users(user_dict)
 
-    return session_token
+    return session_token, csrf_token
 
 def auth_logout_user(session_token):
     """Service func - revokes a user session via token"""
