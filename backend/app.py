@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # pyright: reportOptionalSubscript=false
 
-from flask import Flask, request, g, make_response
+from flask import Flask, request, g
 from flask_cors import CORS
 from decorators.error import catch_errors
 from classes.Error import AccessError, InputError
@@ -35,32 +35,6 @@ GAME_PLAY_REGEX_PATH = r"^/play/"
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-
-def build_auth_response(session_token, csrf_token):
-    """Return a JSON body for the CSRF token and set secure session cookies."""
-    response = make_response({"csrf_token": csrf_token}, 200)
-
-    secure_cookie = not app.config.get("TESTING", False)
-    response.set_cookie(
-        "session_token",
-        session_token,
-        httponly=True,
-        samesite="Lax",
-        secure=secure_cookie,
-        path="/",
-    )
-    response.set_cookie(
-        "csrf_token",
-        csrf_token,
-        httponly=True,
-        samesite="Lax",
-        secure=secure_cookie,
-        path="/",
-    )
-
-    return response
-
-
 def bypass_auth_check(request):
     if request.path in IGNORE_AUTH_PATHS:
         return True
@@ -78,8 +52,10 @@ def flask_middle_auth():
     if bypass_auth_check(request):
         return
 
-    # Accept the session token from the Authorization header or the secure cookie.
-    session_token = request.headers.get("Authorization") or request.cookies.get("session_token")
+    # TODO: Extract and validate session token from Authorization header
+    # TODO: Extract and validate CSRF token from X-CSRF-Token header
+    # TODO: Implement authorization check for protected routes
+    session_token = request.headers.get("Authorization")
 
     if not isinstance(session_token, str):
         raise AccessError("Invalid session token")
@@ -106,7 +82,11 @@ def admin_auth_register():
     name = data["name"]
 
     session_token, csrf_token = auth_register_user(email, password, name)
-    return build_auth_response(session_token, csrf_token)
+    # TODO: Include CSRF token in response
+    response = {"session_token": session_token, "csrf_token": csrf_token}
+    #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
+    #response.set_cookie("csrf_token", csrf_token, httponly=True, samesite="Lax", secure=True)
+    return response, 200
 
 
 @app.route("/admin/auth/login", methods=["POST"])
@@ -119,7 +99,11 @@ def admin_auth_login():
     password = data["password"]
 
     session_token, csrf_token = auth_login_user(email, password)
-    return build_auth_response(session_token, csrf_token)
+    # TODO: Include CSRF token in response
+    response = {"session_token": session_token, "csrf_token": csrf_token}
+    #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
+    #response.set_cookie("csrf_token", csrf_token, httponly=True, samesite="Lax", secure=True)
+    return response, 200
 
 
 @app.route("/admin/auth/logout", methods=["POST"])
