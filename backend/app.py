@@ -83,8 +83,8 @@ def admin_auth_register():
 
     session_token, csrf_token = auth_register_user(email, password, name)
     # TODO: Include CSRF token in response 
-    #response = jsonify({"session_token": session_token, "csrf_token": csrf_token})
-    #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
+    response = jsonify({"session_token": session_token, "csrf_token": csrf_token})
+    response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
 
     #response = jsonify({"csrf_token": csrf_token})
     #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
@@ -102,8 +102,8 @@ def admin_auth_login():
 
     session_token, csrf_token = auth_login_user(email, password)
     # TODO: Include CSRF token in response
-    #response = jsonify({"session_token": session_token, "csrf_token": csrf_token})
-    #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
+    response = jsonify({"session_token": session_token, "csrf_token": csrf_token})
+    response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
   
     #response = jsonify({"csrf_token": csrf_token})
     #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
