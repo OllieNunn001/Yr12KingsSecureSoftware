@@ -11,7 +11,8 @@ import { calcDuration } from '@/utils/helpers';
 export const getSessionStatus = async (sessionId) => {
     const sessionToken = localStorage.getItem("session_token");
     // TODO: Retrieve CSRF token for request
-    const response = await requestBackend("GET", `admin/session/${sessionId}/status`, {sessionToken}, null, null);
+    const csrfToken = localStorage.getItem("csrf_token");
+    const response = await requestBackend("GET", `admin/session/${sessionId}/status`, {sessionToken, csrfToken}, null, null);
 
     if (response.error) {
         throw new Error(response.error);
@@ -27,7 +28,8 @@ export const getSessionStatus = async (sessionId) => {
 export const getSessionResults = async (sessionId) => {
     const sessionToken = localStorage.getItem("session_token");
     // TODO: Retrieve CSRF token for request
-    const response = await requestBackend("GET", `admin/session/${sessionId}/results`, {sessionToken}, null, null);
+    const csrfToken = localStorage.getItem("csrf_token");
+    const response = await requestBackend("GET", `admin/session/${sessionId}/results`, {sessionToken, csrfToken}, null, null);
     console.log(response)
     if (response.error) {
         throw new Error(response.error);

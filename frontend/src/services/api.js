@@ -25,6 +25,7 @@ export const requestBackend = async (method, route, tokens, payload, query) => {
     if (tokens) {
         options.headers.Authorization = tokens.sessionToken;
         // TODO: Include CSRF token in X-CSRF-Token header
+        options.headers['X-CSRF-Token'] = tokens.csrfToken;
     }
 
     if (payload) {

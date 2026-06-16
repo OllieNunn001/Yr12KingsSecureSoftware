@@ -17,6 +17,7 @@ export const adminAuthRegister = async (email, password, name) => {
     }
     sessionStorage.setItem("session_token", response.session_token);
     // TODO: Store CSRF token in secure storage (sessionStorage recommended)
+    sessionStorage.setItem("csrf_token", response.csrf_token);
     sessionStorage.setItem("owner", email);
     return response;
 };
@@ -37,7 +38,9 @@ export const adminAuthLogin = async (email, password) => {
     }
     sessionStorage.setItem("session_token", response.session_token);
     // TODO: Store CSRF token in secure storage (sessionStorage recommended)
+    sessionStorage.setItem("csrf_token", response.csrf_token);
     sessionStorage.setItem("owner", email);
+
     return response;
 }
 
@@ -50,7 +53,7 @@ export const adminAuthLogout = async () => {
     const tokens = {
         sessionToken: sessionStorage.getItem("session_token"),
         // TODO: Retrieve CSRF token for logout request
-        
+        csrfToken: sessionStorage.getItem("csrf_token"),
     }
     const ownerEmailAddress = sessionStorage.getItem("owner");
 
@@ -64,6 +67,7 @@ export const adminAuthLogout = async () => {
     }
 
     sessionStorage.removeItem("session_token");
+    sessionStorage.removeItem("csrf_token");
     sessionStorage.removeItem("owner");
 }
 
@@ -75,6 +79,7 @@ export const validateUserToken = async () => {
     const tokens = {
         sessionToken: sessionStorage.getItem("session_token"),
         // TODO: Include CSRF token for validation
+        csrfToken: sessionStorage.getItem("csrf_token"),
     }
     
     // TODO: Implement proper token validation

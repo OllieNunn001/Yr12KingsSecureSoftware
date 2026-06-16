@@ -8,6 +8,7 @@ export const getAllGames = async () => {
     const tokens = {
         sessionToken: localStorage.getItem("session_token"),
         // TODO: Include CSRF token
+        csrfToken: localStorage.getItem("csrf_token"),
     }    
     const response = await requestBackend("GET", "admin/games", tokens, null, null);
 
@@ -25,6 +26,7 @@ export const putGames = async (body) => {
     const tokens = {
         sessionToken: localStorage.getItem("session_token"),
         // TODO: Include CSRF token
+        csrfToken: localStorage.getItem("csrf_token"),
     }    
     const response = await requestBackend("PUT", "admin/games", tokens, body, null);
 
@@ -43,6 +45,7 @@ export const updateGame = async (body) => {
     const tokens = {
         sessionToken: localStorage.getItem("session_token"),
         // TODO: Include CSRF token
+        csrfToken: localStorage.getItem("csrf_token"),
     }    
     const response = await requestBackend("PUT", "admin/games", tokens, body, null);
 
@@ -56,6 +59,7 @@ export const postMutateGame = async (gameId, body) => {
     const tokens = {
         sessionToken: localStorage.getItem("session_token"),
         // TODO: Include CSRF token
+        csrfToken: localStorage.getItem("csrf_token"),
     }    
     const response = await requestBackend("POST", `admin/game/${gameId}/mutate`, tokens, body, null);
     return response;
@@ -114,6 +118,7 @@ export const getQuestion = async (gameId, questionId) => {
     const tokens = {
         sessionToken: localStorage.getItem("session_token"),
         // TODO: Include CSRF token
+        csrfToken: localStorage.getItem("csrf_token"),
     }
     const response = await requestBackend("GET", "admin/games", tokens, null, null);
     const games = response.games.find(game => game.id.toString() === gameId);
