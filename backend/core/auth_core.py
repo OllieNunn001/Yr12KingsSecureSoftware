@@ -5,16 +5,16 @@ from classes.Error import InputError
 def authorise_user(session_token, csrf_token):
     """Authorises user IFF a valid session token exsist"""
     # TODO: Implement session token validation
-    if not isinstance(session_token, str):
+    user_dict = load_users()
+    if not isinstance(session_token, str):# or not isinstance(csrf_token, str):
         return False
-    if session_token.strip() == "":
+    if session_token.strip() == "":# or csrf_token.strip() == "":
         return False
     # TODO: Implement CSRF token validation
     # 
     # TODO: Check both tokens match a valid user session
-    user_dict = load_users()
     for user in user_dict.values():
-        if user.session_token == session_token:
+        if user.session_token == session_token:# and user.csrf_token == csrf_token:
             return True
     return False
 
