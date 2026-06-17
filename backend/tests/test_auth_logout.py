@@ -26,10 +26,14 @@ def test_successful_logout(client):
     assert response.status_code == 200
     session_token = response.get_json()["session_token"]
     # TODO: Test CSRF token retrieval and inclusion
+    csrf_token = response.get_json().get("csrf_token")
 
     response = client.post(
         "/admin/auth/logout",
-        headers={"Authorization": session_token},  # TODO: Include X-CSRF-Token header
+        headers={
+            "Authorization": session_token,
+            "X-CSRF-Token": csrf_token
+        }
     )
 
     assert response.status_code == 200
@@ -44,6 +48,7 @@ def test_invalid_tokens_logout(client):
         headers={
             "Authorization": "Invalid token",
             # TODO: Include invalid X-CSRF-Token header
+            "X-CSRF-Token": "Invalid CSRF token"
         },
     )
 
