@@ -54,6 +54,7 @@ def test_invalid_tokens_logout(client):
 
     assert response1.status_code == 403
 
+
 def test_missing_tokens(client):
     """Test missing tokens in request"""
     # TODO: Test missing CSRF token validation
