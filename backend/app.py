@@ -90,7 +90,6 @@ def admin_auth_register():
     #response.set_cookie("session_token", session_token, httponly=True, samesite="Lax", secure=True)
     return response, 200
 
-
 @app.route("/admin/auth/login", methods=["POST"])
 @catch_errors
 def admin_auth_login():
